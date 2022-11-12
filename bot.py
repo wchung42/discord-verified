@@ -29,14 +29,15 @@ class VerifyBot(commands.Bot):
         )
         self.session = session
         self.config_token = str(os.getenv('BOT_TOKEN'))
-        self.version = '0.1.0'
+        self.version = '1.0.0'
         self.DEFAULTPREFIX = DEFAULT_PREFIX
         self.owner_guild_id = os.getenv('OWNER_GUILD_ID')
 
         logging.basicConfig(level=logging.INFO)
 
         self.initial_extensions = [
-            'cogs.verify'
+            'cogs.verify',
+            'cogs.help'
         ]
 
 
@@ -47,8 +48,8 @@ class VerifyBot(commands.Bot):
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
-        # self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
-        # await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
+        self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
+        await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
         await self.tree.sync()
         print('Slash commands synced...')
         print('Setup complete...')
