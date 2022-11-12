@@ -30,7 +30,8 @@ class Verify(commands.Cog):
         if isinstance(error, app_commands.BotMissingPermissions):
             embed.description = f'I am missing {error.missing_permissions} permissions.'
         elif isinstance(error, app_commands.CommandInvokeError):
-            embed.description = 'If you are the server owner, unfortunately I cannot change your nickname.'
+            embed.description = 'If you are the server owner or someone more powerful than the bot, unfortunately I cannot change your nickname.'
+            embed.add_field(name='Copy and paste', value=f'{interaction.user.display_name} ✔', inline=True)
         elif isinstance(error, discord.Forbidden):
             pass
         else:
@@ -38,10 +39,10 @@ class Verify(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name='verifyme', description='"Verifies" you on the server.')
+    @app_commands.command(name='verifyme', description='"Verifies" you on the server. Will not work for server owners and members with roles above this bot.')
     @app_commands.checks.bot_has_permissions(manage_nicknames=True)
     async def verify(self, interaction: discord.Interaction) -> None:
-        '''Adds a checkmark to the users name.'''
+        '''Adds a checkmark to the user's current display name.'''
         check = '✔'
         await interaction.user.edit(nick=f'{interaction.user.display_name} {check}')
         await interaction.response.send_message(content=':white_check_mark: Verified! :white_check_mark:')
