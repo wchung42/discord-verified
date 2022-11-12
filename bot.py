@@ -48,8 +48,8 @@ class VerifyBot(commands.Bot):
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
-        self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
-        await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
+        # self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
+        # await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
         await self.tree.sync()
         print('Slash commands synced...')
         print('Setup complete...')
