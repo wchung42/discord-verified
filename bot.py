@@ -1,10 +1,13 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
+from dotenv import load_dotenv
 import os
 import asyncio
 import aiohttp
 import logging
+
+load_dotenv()
 
 DEFAULT_PREFIX = 'v!'
 
@@ -44,7 +47,8 @@ class VerifyBot(commands.Bot):
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
-        await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
+        # self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
+        # await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
         await self.tree.sync()
         print('Slash commands synced...')
         print('Setup complete...')
