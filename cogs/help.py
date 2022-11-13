@@ -29,16 +29,7 @@ class Help(commands.Cog):
         ).set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
         embed.add_field(
             name=f'{commands[0].mention}',
-            value='Adds a checkmark to your current display name.',
-            inline=False,
-        )
-        embed.add_field(
-            name='Note',
-            value='''
-                I cannot change the names of server owners or anyone with a role higher than one I have. 
-                As a workaround, make a hidden role and set it higher than roles you want to be able
-                to use the command and give it **[manage_nicknames]** permission(s).
-                ''',
+            value='Adds a checkmark to your current display name.\n**Important Note:** I cannot change the names of server owners or anyone with a role higher than one I have. As a workaround, make a hidden role and set it higher than roles you want to be able to use the command and give it **[manage_nicknames]** permission(s).',
             inline=False,
         )
         await interaction.response.send_message(embed=embed)
