@@ -21,6 +21,9 @@ class Verify(commands.Cog):
 
     
     async def cog_app_command_error(self, interaction: discord.Interaction, error) -> None:
+        # I need to find a way to deal with multiple exception being catched at once
+        # Causing an "interaction has already been responded to" exception to be raised
+        # Interactions can only be responded to once
         embed = discord.Embed(
             title='ERROR',
             color=discord.Color(0xFF0000),
@@ -44,10 +47,13 @@ class Verify(commands.Cog):
     async def verify(self, interaction: discord.Interaction) -> None:
         '''Adds a checkmark to the user's current display name.'''
         check = '✔'
+        # Edit current display name with check
         await interaction.user.edit(nick=f'{interaction.user.display_name} {check}')
+        # Send interaction response
         await interaction.response.send_message(content=':white_check_mark: Verified! :white_check_mark:')
 
 
+    # Default ping command for testing purposes; Uncomment to use
     # @app_commands.command(name='ping', description='Pong.')
     # # @app_commands.guilds(discord.Object(id=200372022549676032))
     # async def ping(self, interaction: discord.Interaction) -> None:
