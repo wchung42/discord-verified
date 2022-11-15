@@ -30,7 +30,7 @@ class VerifyBot(commands.Bot):
         )
         self.session = session
         self.config_token = str(os.getenv('BOT_TOKEN'))
-        self.version = '2.0.0'
+        self.version = '2.1.0'
         self.DEFAULTPREFIX = DEFAULT_PREFIX
         self.owner_guild_id = os.getenv('OWNER_GUILD_ID')
 
