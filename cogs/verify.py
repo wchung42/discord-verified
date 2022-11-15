@@ -74,6 +74,24 @@ class Verify(commands.Cog):
         await interaction.response.send_message(content=':white_check_mark: Verified! :white_check_mark:')
 
 
+    @app_commands.command(name='count', description='Returns number of successful verifications.')
+    async def count(self, interaction: discord.Interaction) -> None:
+        '''Shows number of successful verifications.'''
+        # Get "verify_counter" collection
+        db = self.bot.mongoConnect['counters']
+        collection = db['verify_counter']
+
+        # Get verifies count
+        try:
+            result = await collection.find_one({'_id': 'verifies'})
+        except Exception as e:
+            await interaction.response.send_message('ERROR: Could not fetch from database.')
+        else:
+            verify_cnt = result['count']
+            await interaction.response.send_message(f'**{verify_cnt}** members verified!')
+
+
+
     # Default ping command for testing purposes; Uncomment to use
     # @app_commands.command(name='ping', description='Pong.')
     # # @app_commands.guilds(discord.Object(id=200372022549676032))
