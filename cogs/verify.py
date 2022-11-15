@@ -32,6 +32,8 @@ class Verify(commands.Cog):
         print(error)
         if isinstance(error, app_commands.BotMissingPermissions):
             embed.description = f'I am missing {error.missing_permissions} permissions.'
+        elif isinstance(error, discord.HTTPException):
+            embed.description = f'Your current nickname is too long.'
         elif isinstance(error, app_commands.CommandInvokeError):
             embed.description = 'If you are the server owner or someone more powerful than the bot, unfortunately I cannot change your nickname.'
             embed.add_field(name='Copy and paste', value=f'{interaction.user.display_name} ✔', inline=True)
@@ -46,9 +48,28 @@ class Verify(commands.Cog):
     @app_commands.checks.bot_has_permissions(manage_nicknames=True)
     async def verify(self, interaction: discord.Interaction) -> None:
         '''Adds a checkmark to the user's current display name.'''
-        check = '✔'
         # Edit current display name with check
+        check = '✔'
         await interaction.user.edit(nick=f'{interaction.user.display_name} {check}')
+
+        # Get "verify_counter" collection
+        db = self.bot.mongoConnect['counters']
+        collection = db['verify_counter']
+
+        # Check if "verifies" counter is already in collection, if not then create and insert
+        if await collection.find_one({'_id': 'verifies'}) is None:
+            new_data = {
+                '_id': 'verifies',
+                'count': 1
+            }
+            await collection.insert_one(new_data)
+        else:
+            # Increment counter in db
+            await collection.update_one(
+                {'_id': 'verifies'},
+                {'$inc': {'count': 1}}, 
+            )
+
         # Send interaction response
         await interaction.response.send_message(content=':white_check_mark: Verified! :white_check_mark:')
 
