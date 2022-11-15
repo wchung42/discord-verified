@@ -2,6 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
+import motor.motor_asyncio
 import os
 import asyncio
 import aiohttp
@@ -29,7 +30,7 @@ class VerifyBot(commands.Bot):
         )
         self.session = session
         self.config_token = str(os.getenv('BOT_TOKEN'))
-        self.version = '1.0.0'
+        self.version = '2.1.0'
         self.DEFAULTPREFIX = DEFAULT_PREFIX
         self.owner_guild_id = os.getenv('OWNER_GUILD_ID')
 
@@ -45,9 +46,12 @@ class VerifyBot(commands.Bot):
         print('Running setup...')
         self.session = aiohttp.ClientSession()
 
+        # Load initial extensions
         for ext in self.initial_extensions:
             await self.load_extension(ext)
 
+        # Sync slash commands
+        print('Syncing slash commands...')
         # self.tree.copy_global_to(guild=discord.Object(id=self.owner_guild_id))
         # await self.tree.sync(guild=discord.Object(id=self.owner_guild_id))
         await self.tree.sync()
@@ -74,7 +78,10 @@ class VerifyBot(commands.Bot):
 async def main():
     async with aiohttp.ClientSession() as session:
         async with VerifyBot(session) as bot:
+            db_uri = os.getenv('DB_URI')
+            bot.mongoConnect = motor.motor_asyncio.AsyncIOMotorClient(db_uri)
             await bot.start(bot.config_token)
 
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

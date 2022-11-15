@@ -29,8 +29,7 @@ class Help(commands.Cog):
         ).set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
         embed.add_field(
             name=f'{commands[0].mention}',
-            value='''Adds a checkmark to your current display name.\n\n**Important Note:** I cannot change the names of server owners or anyone with a 
-            role higher than one I have. As a workaround, set this bot\'s role higher than roles you want to be able to use the command.''',
+            value='''Adds a checkmark to your current display name.\n\n**Important Note:** I cannot change the names of server owners or anyone with a role higher than one I have. As a workaround, set this bot\'s role higher than roles you want to be able to use the command.''',
             inline=False,
         )
         await interaction.response.send_message(embed=embed)
