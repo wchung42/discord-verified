@@ -44,7 +44,7 @@ class Verify(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name='verifyme', description='"Verifies" you on the server. Will not work for server owners and members with roles above this bot.')
+    @app_commands.command(name='verifyme', description='"Verifies" you on the server.')
     @app_commands.checks.bot_has_permissions(manage_nicknames=True)
     async def verify(self, interaction: discord.Interaction) -> None:
         '''Adds a checkmark to the user's current display name.'''
@@ -92,7 +92,7 @@ class Verify(commands.Cog):
 
 
 
-    # Default ping command for testing purposes; Uncomment to use
+    # Default ping command for testing purposes; Uncomment to use this test command
     # @app_commands.command(name='ping', description='Pong.')
     # # @app_commands.guilds(discord.Object(id=200372022549676032))
     # async def ping(self, interaction: discord.Interaction) -> None:
